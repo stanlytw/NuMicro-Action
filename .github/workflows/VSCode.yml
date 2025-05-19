@@ -40,10 +40,10 @@ jobs:
 
       - name: Activate & Build each csolution
         shell: bash
-        continue-on-error: true
         run: |
           mapfile -t solutions < <(find ./bsp_repo/SampleCode -name '*.csolution.yml')
 
+          set +e
           for sol in "${solutions[@]}"; do
             proj_dir=$(dirname "$sol")
             proj=$(basename "$sol")
@@ -67,6 +67,7 @@ jobs:
             cd - > /dev/null
 
           done
+          set -e
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
