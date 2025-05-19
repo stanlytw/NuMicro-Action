@@ -39,9 +39,10 @@ jobs:
         uses: ARM-software/cmsis-actions/armlm@v1     
 
       - name: Prepare Dependencies
+        if: matrix.os == 'ubuntu-latest'      
         run: |
-          sudo apt-get update
-          sudo apt-get install -y libncurses5
+          wget http://archive.ubuntu.com/ubuntu/pool/main/n/ncurses/libncurses5_6.1-1ubuntu1_amd64.deb
+          sudo dpkg -i libncurses5_6.1-1ubuntu1_amd64.deb
 
       - name: Activate & Build each csolution
         shell: bash
