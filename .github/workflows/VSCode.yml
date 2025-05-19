@@ -38,6 +38,11 @@ jobs:
       - name: Activate Arm tool license
         uses: ARM-software/cmsis-actions/armlm@v1     
 
+      - name: Prepare Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libncurses5
+
       - name: Activate & Build each csolution
         shell: bash
         run: |
