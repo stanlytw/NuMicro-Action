@@ -53,6 +53,12 @@ jobs:
           for sol in "${solutions[@]}"; do
             proj_dir=$(dirname "$sol")
             proj=$(basename "$sol")
+
+            proj_name="${proj%.csolution.yml}"
+            if [[ "$proj_name" != "ACI_SinCos" ]]; then
+              continue
+            fi
+
             cd "$proj_dir"
             echo "current -> $(pwd)"
 
@@ -66,9 +72,9 @@ jobs:
             echo "Preserving vcpkg ENV ..."
             jq -r '.tools | to_entries[] | "\(.key)=\(.value)"' env.json >> "$GITHUB_ENV"
 
-            cbuild "$proj" --update-rte --packs
-
             cbuild "$proj" --update-rte --clean
+
+            cbuild "$proj" --update-rte --packs
 
             vcpkg deactivate
 
