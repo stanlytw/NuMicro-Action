@@ -45,10 +45,9 @@ jobs:
           REPO_ROOT="$GITHUB_WORKSPACE"
           chmod +x "$GITHUB_WORKSPACE/.github/workflows/vcpkg_build.sh"
 
-          set +x
-
           mapfile -t solutions < <(find ./bsp_repo/SampleCode -name '*.csolution.yml')
 
+          set +e
           for sol_path in "${solutions[@]}"; do
             sol_dir=$(dirname "$sol_path")
             sol_name=$(basename "$sol_path")
@@ -66,8 +65,7 @@ jobs:
             fi
             
           done
-
-          set -x
+          set -e
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
