@@ -87,3 +87,11 @@ jobs:
           name: firmware-${{ matrix.os }}
           path: |
             **/SampleCode/**/*.bin
+
+      - name: fail log artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: faillog-${{ matrix.os }}
+          path: |
+            **/SampleCode/**/*.csolution.yml.txt
+            
