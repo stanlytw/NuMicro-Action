@@ -17,7 +17,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-22.04, windows-latest]
+        os: [ubuntu-latest, windows-latest]
 
     steps:
       - uses: actions/checkout@v2
@@ -37,12 +37,6 @@ jobs:
 
       - name: Activate Arm tool license
         uses: ARM-software/cmsis-actions/armlm@v1     
-
-      - name: Install libncurses5 for arm-none-eabi-gdb
-        if: matrix.os == 'ubuntu-22.04'      
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libncurses5
 
       - name: Activate & Build each csolution
         shell: bash
@@ -72,8 +66,11 @@ jobs:
             echo "Preserving vcpkg ENV ..."
             jq -r '.tools | to_entries[] | "\(.key)=\(.value)"' env.json >> "$GITHUB_ENV"
 
-            cat $GITHUB_PATH
-            cat $GITHUB_ENV
+            echo "WAYNE DEBUG START"
+            cat env.json
+            echo "GITHUB_PATH=$GITHUB_PATH"
+            echo "GITHUB_ENV=$GITHUB_ENV"
+            echo "WAYNE DEBUG STOP"
 
             cbuild "$proj" --update-rte --clean
 
