@@ -66,19 +66,16 @@ jobs:
             echo "Preserving vcpkg ENV ..."
             jq -r '.tools | to_entries[] | "\(.key)=\(.value)"' env.json >> "$GITHUB_ENV"
 
-            echo "WAYNE DEBUG START"
-            cat env.json
-            echo ""
-            echo "GITHUB_PATH=$GITHUB_PATH"
-            cat $GITHUB_PATH
-            echo ""
-            echo "GITHUB_ENV=$GITHUB_ENV"
-            cat $GITHUB_ENV
-            echo ""
+            echo "🔧 Applying toolchain environment from env.json ..."
+            # 匯入 tools 變數 (如 GCC_ROOT, CC)
+            eval $(jq -r '.tools | to_entries[] | "export \(.key)=\(.value)"' env.json)
 
-            which arm-none-eabi-gcc
+            # 加入 PATH（多個 path 合併成一行）
+            export PATH="$(jq -r '.paths.PATH[]' env.json | paste -sd ":" -):$PATH"
+
+            # 確認工具鏈是否正確
+            echo "✅ Compiler path: $(which arm-none-eabi-gcc)"
             arm-none-eabi-gcc --version
-            env
 
             echo ""
             echo "WAYNE DEBUG STOP"
