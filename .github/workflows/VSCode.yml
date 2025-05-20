@@ -49,6 +49,7 @@ jobs:
             proj=$(basename "$sol")
 
             proj_name="${proj%.csolution.yml}"
+            echo "$proj_name"
             if [[ "$proj_name" != "ACI_SinCos" ]]; then
               continue
             fi
