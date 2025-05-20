@@ -43,6 +43,8 @@ jobs:
         shell: bash
         run: |
           REPO_ROOT="$GITHUB_WORKSPACE"
+          chmod +x "$GITHUB_WORKSPACE/.github/workflows/vcpkg_build.sh"
+
           mapfile -t solutions < <(find ./bsp_repo/SampleCode -name '*.csolution.yml')
 
           set +e
