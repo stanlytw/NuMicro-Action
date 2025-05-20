@@ -47,6 +47,8 @@ jobs:
 
           mapfile -t solutions < <(find ./bsp_repo/SampleCode -name '*.csolution.yml')
 
+          declare -a failed_logs=()
+
           set +e
           for sol_path in "${solutions[@]}"; do
             sol_dir=$(dirname "$sol_path")
@@ -60,12 +62,24 @@ jobs:
               echo "❌ Build failed: $sol_path"
               echo "🔍 Log:"
               cat "$log_path"
+              failed_logs+=("$log_path")   #add log into the set.
             else
               echo "✅ Build success: $sol_path"
             fi
             
           done
           set -e
+
+          # 結尾列出所有失敗的 log 路徑（若有）
+          if [[ ${#failed_logs[@]} -ne 0 ]]; then
+            echo "🚨 The following builds failed:"
+            for log in "${failed_logs[@]}"; do
+              echo "  - $log"
+            done
+            exit 1
+          else
+            echo "🎉 All builds succeeded!"
+          fi
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
