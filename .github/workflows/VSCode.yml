@@ -57,7 +57,7 @@ jobs:
             cd "$proj_dir"
             echo "current -> $(pwd)"
             echo "Building: $sol"
-            $GITHUB_WORKSPACE/bsp_repo/.github/workflows/vcpkg_build.sh $proj
+            .github/workflows/vcpkg_build.sh $proj
             cd - > /dev/null
 
           done
