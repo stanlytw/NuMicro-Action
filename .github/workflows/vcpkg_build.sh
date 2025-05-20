@@ -1,23 +1,35 @@
 #!/bin/bash
 
-set -e
+set +e
 
-proj="$1"
-if [ -z "$proj" ]; then
-  echo "❌ Error: Missing project file name (.csolution.yml)"
-  echo "Usage: ./build_project.sh <your_project.csolution.yml>"
+proj_path="$1"
+if [ -z "$proj_path" ]; then
+  echo "❌ Error: Missing project file path (.csolution.yml)"
+  echo "Usage: ./vcpkg_buld.sh <your_project.csolution.yml>"
   exit 1
 fi
 
-# 產生 env.json
+proj_dir=$(dirname "$proj_path")
+proj=$(basename "$proj_path")
+
+#proj_name="${proj%.csolution.yml}"
+#if [[ "$proj_name" != "ACI_SinCos" ]]; then
+#  continue
+#fi
+
+cd "$proj_dir"
+echo "current -> $(pwd)"
+echo "Building: $proj_path"
+
+# Generate env.json
 echo "🔧 Activating vcpkg environment..."
 vcpkg activate --downloads-root="${GITHUB_WORKSPACE:-$(pwd)}/.vcpkg/downloads" --json=env.json
 
-# 加入 PATH
+# Add PATH
 echo "Preserving vcpkg PATH ..."
 jq -r '.paths.PATH[]' env.json >> "${GITHUB_PATH:-./.github_path_tmp}"
 
-# 加入 ENV
+# Add ENV
 echo "Preserving vcpkg ENV ..."
 jq -r '.tools | to_entries[] | "\(.key)=\(.value)"' env.json >> "${GITHUB_ENV:-./.github_env_tmp}"
 
@@ -26,17 +38,19 @@ echo "🔧 Applying toolchain environment from env.json ..."
 eval $(jq -r '.tools | to_entries[] | "export \(.key)=\(.value)"' env.json)
 export PATH="$(jq -r '.paths.PATH[]' env.json | paste -sd ':' -):$PATH"
 
-# 檢查工具鏈
+# Check toolchain
 echo "✅ Compiler path: $(which arm-none-eabi-gcc)"
 arm-none-eabi-gcc --version
 
-# 執行建置
+# run cbuild clean & build
 echo "🛠 Running cbuild (clean)..."
 cbuild "$proj" --clean --packs
 
 echo "📦 Running cbuild (update-rte & packs)..."
 cbuild "$proj" --update-rte --packs
 
-# 結束
+# Complete
 vcpkg deactivate
 echo "✅ Build complete: $proj"
+
+set -x
