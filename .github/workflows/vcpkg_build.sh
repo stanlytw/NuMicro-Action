@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set +e
+set -e
 
 proj_path="$1"
 if [ -z "$proj_path" ]; then
@@ -52,5 +52,3 @@ cbuild "$proj" --update-rte --packs
 # Complete
 vcpkg deactivate
 echo "✅ Build complete: $proj"
-
-set -x
