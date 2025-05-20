@@ -18,7 +18,7 @@ if [[ "$proj_name" != "CSSD_LED_Secure" ]]; then
 fi
 
 cd "$proj_dir"
-echo "current -> $(pwd)"
+#echo "current -> $(pwd)"
 echo "Building: $proj_path"
 
 # Generate env.json
@@ -33,14 +33,14 @@ jq -r '.paths.PATH[]' env.json >> "${GITHUB_PATH:-./.github_path_tmp}"
 echo "Preserving vcpkg ENV ..."
 jq -r '.tools | to_entries[] | "\(.key)=\(.value)"' env.json >> "${GITHUB_ENV:-./.github_env_tmp}"
 
-# 立即在本 shell 套用（方便你直接執行）
+# Apply env in shell
 echo "🔧 Applying toolchain environment from env.json ..."
 eval $(jq -r '.tools | to_entries[] | "export \(.key)=\(.value)"' env.json)
 export PATH="$(jq -r '.paths.PATH[]' env.json | paste -sd ':' -):$PATH"
 
 # Check toolchain
 echo "✅ Compiler path: $(which arm-none-eabi-gcc)"
-arm-none-eabi-gcc --version
+#arm-none-eabi-gcc --version
 
 # run cbuild clean & build
 echo "🛠 Running cbuild (clean)..."
