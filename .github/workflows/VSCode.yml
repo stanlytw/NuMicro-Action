@@ -46,25 +46,9 @@ jobs:
           chmod +x "$GITHUB_WORKSPACE/.github/workflows/vcpkg_build.sh"
 
           mapfile -t solutions < <(find ./bsp_repo/SampleCode -name '*.csolution.yml')
-
-          set +e
           for sol in "${solutions[@]}"; do
-            proj_dir=$(dirname "$sol")
-            proj=$(basename "$sol")
-
-            proj_name="${proj%.csolution.yml}"
-            if [[ "$proj_name" != "ACI_SinCos" ]]; then
-              continue
-            fi
-
-            cd "$proj_dir"
-            echo "current -> $(pwd)"
-            echo "Building: $sol"
-            $REPO_ROOT/.github/workflows/vcpkg_build.sh $proj
-            cd - > /dev/null
-
+            $REPO_ROOT/.github/workflows/vcpkg_build.sh $sol
           done
-          set -e
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
