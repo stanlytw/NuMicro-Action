@@ -32,7 +32,7 @@ arm-none-eabi-gcc --version
 
 # 執行建置
 echo "🛠 Running cbuild (clean)..."
-cbuild "$proj" --clean
+cbuild "$proj" --clean --packs
 
 echo "📦 Running cbuild (update-rte & packs)..."
 cbuild "$proj" --update-rte --packs
