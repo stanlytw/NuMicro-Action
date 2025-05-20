@@ -70,8 +70,10 @@ jobs:
             cat env.json
             echo ""
             echo "GITHUB_PATH=$GITHUB_PATH"
+            cat $GITHUB_PATH
             echo ""
             echo "GITHUB_ENV=$GITHUB_ENV"
+            cat $GITHUB_ENV
             echo ""
 
             which arm-none-eabi-gcc
