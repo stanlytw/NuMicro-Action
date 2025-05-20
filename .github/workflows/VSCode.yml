@@ -55,37 +55,8 @@ jobs:
 
             cd "$proj_dir"
             echo "current -> $(pwd)"
-
             echo "Building: $sol"
-
-            vcpkg activate --downloads-root="${{ github.workspace }}/.vcpkg/downloads" --json=env.json
-
-            echo "Preserving vcpkg PATH ..."
-            jq '.paths.PATH[]' env.json | tr -d '"' >> "$GITHUB_PATH"
-      
-            echo "Preserving vcpkg ENV ..."
-            jq -r '.tools | to_entries[] | "\(.key)=\(.value)"' env.json >> "$GITHUB_ENV"
-
-            echo "🔧 Applying toolchain environment from env.json ..."
-            # 匯入 tools 變數 (如 GCC_ROOT, CC)
-            eval $(jq -r '.tools | to_entries[] | "export \(.key)=\(.value)"' env.json)
-
-            # 加入 PATH（多個 path 合併成一行）
-            export PATH="$(jq -r '.paths.PATH[]' env.json | paste -sd ":" -):$PATH"
-
-            # 確認工具鏈是否正確
-            echo "✅ Compiler path: $(which arm-none-eabi-gcc)"
-            arm-none-eabi-gcc --version
-
-            echo ""
-            echo "WAYNE DEBUG STOP"
-
-            cbuild "$proj" --update-rte --clean
-
-            cbuild "$proj" --update-rte --packs
-
-            vcpkg deactivate
-
+            /bin/bash "${GITHUB_WORKSPACE}/.github/workflow/vcpkg_build.sh $proj"
             cd - > /dev/null
 
           done
