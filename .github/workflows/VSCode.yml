@@ -55,7 +55,11 @@ jobs:
             sol_name=$(basename "$sol_path")
             log_path="$sol_dir/$sol_name.txt"
 
+            # Build & Produce log file
             $REPO_ROOT/.github/workflows/vcpkg_build.sh "$sol_path" > $log_path
+
+            # Check log file
+            $REPO_ROOT/.github/workflows/vcpkg_blacklist_check.sh $log_path
             ret=$?
 
             if [[ $ret -ne 0 ]]; then
@@ -66,7 +70,7 @@ jobs:
             else
               echo "✅ Build success: $sol_path"
             fi
-            
+
           done
           set -e
 
