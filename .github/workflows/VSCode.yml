@@ -86,9 +86,65 @@ jobs:
             echo "🎉 All builds succeeded!"
           fi
 
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
+          # Save failed logs list for later
+          if [[ ${#failed_logs[@]} -ne 0 ]]; then
+            printf "%s," "${failed_logs[@]}" | sed 's/,$//' > failed_logs.txt
+            exit 1
+          else
+            echo "🎉 All builds succeeded!"
+          fi
+  
+      - name: Prepare failed logs for email
+        id: prepare_logs
+        if: failure()  # only runs if previous step failed
+        run: |
+          logs=$(cat failed_logs.txt)
+          echo "logs=$logs" >> "$GITHUB_OUTPUT"
+
+      - name: Send mail
+        if: failure()
+        uses: dawidd6/action-send-mail@v5
         with:
-          name: firmware-${{ matrix.os }}
-          path: |
-            **/SampleCode/**/*.bin         
+          # Specify connection via URL (replaces server_address, server_port, secure,
+          # username and password)
+          #
+          # Format:
+          #
+          #  * smtp://user:password@server:port
+          #  * smtp+starttls://user:password@server:port
+          connection_url: ${{secrets.MAIL_CONNECTION}}
+          # Required mail server address if not connection_url:
+          server_address: smtp.gmail.com
+          # Server port, default 25:
+          server_port: 465
+          # Optional whether this connection use TLS (default is true if server_port is 465)
+          secure: true
+          # Optional (recommended) mail server username:
+          username: ${{secrets.MAIL_USERNAME}}
+          # Optional (recommended) mail server password:
+          password: ${{secrets.MAIL_PASSWORD}}
+          # Required mail subject:
+          subject: ${{github.repository}} Job result
+          # Required recipients' addresses:
+          to: wclin@nuvoton.com,
+          # Required sender full name (address can be skipped):
+          from: Wayne Lin # <user@example.com>
+          body: |
+            Hello,
+  
+            The build has completed. Please find the attached log file for details.
+  
+            Regards,
+            NuMicro Actions          # Optional carbon copy recipients:
+          cc: chhsieh3@nuvoton.com
+          # Optional blind carbon copy recipients:
+          bcc: wclin@nuvoton.com
+          # Optional attachments:
+          attachments: ${{ steps.prepare_logs.outputs.logs }}
+
+      #- name: Upload build artifacts
+      #  uses: actions/upload-artifact@v4
+      #  with:
+      #    name: firmware-${{ matrix.os }}
+      #    path: |
+      #      **/SampleCode/**/*.bin         
