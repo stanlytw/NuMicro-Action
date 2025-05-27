@@ -13,7 +13,7 @@ proj_dir=$(dirname "$proj_path")
 proj=$(basename "$proj_path")
 
 proj_name="${proj%.csolution.yml}"
-if [[ "$proj_name" != "CSSD_LED_Secure" ]]; then
+if [[ "$proj_name" != "Project" ]]; then
     exit 0 #PASS
 fi
 
