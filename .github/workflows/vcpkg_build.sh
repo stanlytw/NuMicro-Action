@@ -12,10 +12,10 @@ fi
 proj_dir=$(dirname "$proj_path")
 proj=$(basename "$proj_path")
 
-proj_name="${proj%.csolution.yml}"
-if [[ "$proj_name" != "Project" ]]; then
-    exit 0 #PASS
-fi
+#proj_name="${proj%.csolution.yml}"
+#if [[ "$proj_name" != "Project" ]]; then
+#    exit 0 #PASS
+#fi
 
 cd "$proj_dir"
 #echo "current -> $(pwd)"
