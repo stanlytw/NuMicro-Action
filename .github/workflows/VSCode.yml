@@ -63,12 +63,9 @@ jobs:
             log_path="$sol_dir/$sol_name.txt"
 
             # Build & Produce log file
-            #$REPO_ROOT/.github/workflows/vcpkg_build.sh "$sol_path" > $log_path
+            $REPO_ROOT/.github/workflows/vcpkg_build.sh "$sol_path" > $log_path
             # Check log file
-            #$REPO_ROOT/.github/workflows/vcpkg_blacklist_check.sh $log_path
-            #ret=$?
-
-            $REPO_ROOT/.github/workflows/vcpkg_build.sh "$sol_path"
+            $REPO_ROOT/.github/workflows/vcpkg_blacklist_check.sh $log_path
             ret=$?
 
             if [[ $ret -ne 0 ]]; then
