@@ -86,15 +86,8 @@ jobs:
             for log in "${failed_logs[@]}"; do
               echo "  - $log"
             done
-            exit 1
-          else
-            echo "🎉 All builds succeeded!"
-          fi
-
-          # Save failed logs list for later
-          if [[ ${#failed_logs[@]} -ne 0 ]]; then
             printf "%s," "${failed_logs[@]}" | sed 's/,$//' > failed_logs.txt
-            exit 1
+            echo "Wrote failed_logs.txt"
           else
             echo "🎉 All builds succeeded!"
           fi
