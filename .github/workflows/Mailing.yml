@@ -1,4 +1,4 @@
-name: VSCode building
+name: Mailing
 
 on:
   workflow_dispatch:
