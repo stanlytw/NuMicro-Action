@@ -25,7 +25,7 @@ jobs:
           #  * smtp+starttls://user:password@server:port
           connection_url: ${{secrets.MAIL_CONNECTION}}
           subject: ${{github.repository}} Job result
-          to: wclin@nuvoton.com,
+          to: wclin@nuvoton.com
           from: Wayne Lin # <user@example.com>
           body: |
             Hello,
