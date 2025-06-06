@@ -18,16 +18,14 @@ jobs:
         with:
           connection_url: ${{ secrets.MAIL_CONNECTION }}
           subject: ${{ github.repository }} Job result
-          to: wclin@nuvoton.com
-          cc: chhsieh3@nuvoton.com
-          bcc: wclin@nuvoton.com
-          from: Wayne Lin <your_email@example.com>
+          to: ${{ secrets.MAIL_TO }}
+          #cc: ${{ secrets.MAIL_CC }}
+          from: Github Action Workflow <your_email@example.com>
           #attachments: ${{ steps.prepare_logs.outputs.logs }}
           body: |
             Hello,
 
             The build has completed. Please find the attached log file for details.
 
-            Regards,
+            Best regards,
             NuMicro Actions
-
