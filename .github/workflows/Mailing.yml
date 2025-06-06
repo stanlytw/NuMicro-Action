@@ -24,31 +24,18 @@ jobs:
           #  * smtp://user:password@server:port
           #  * smtp+starttls://user:password@server:port
           connection_url: ${{secrets.MAIL_CONNECTION}}
-          # Required mail server address if not connection_url:
-          server_address: smtp.gmail.com
-          # Server port, default 25:
-          server_port: 465
-          # Optional whether this connection use TLS (default is true if server_port is 465)
-          secure: true
-          # Optional (recommended) mail server username:
           username: ${{secrets.MAIL_USERNAME}}
-          # Optional (recommended) mail server password:
           password: ${{secrets.MAIL_PASSWORD}}
-          # Required mail subject:
           subject: ${{github.repository}} Job result
-          # Required recipients' addresses:
           to: wclin@nuvoton.com,
-          # Required sender full name (address can be skipped):
           from: Wayne Lin # <user@example.com>
           body: |
             Hello,
-  
+ 
             The build has completed. Please find the attached log file for details.
   
             Regards,
             NuMicro Actions          # Optional carbon copy recipients:
           cc: chhsieh3@nuvoton.com
-          # Optional blind carbon copy recipients:
           bcc: wclin@nuvoton.com
-          # Optional attachments:
-          attachments: ${{ steps.prepare_logs.outputs.logs }}
+          #attachments: ${{ steps.prepare_logs.outputs.logs }}
