@@ -88,6 +88,7 @@ jobs:
             done
             printf "%s," "${failed_logs[@]}" | sed 's/,$//' > failed_logs.txt
             echo "Wrote failed_logs.txt"
+            exit 1
           else
             echo "🎉 All builds succeeded!"
           fi
