@@ -24,8 +24,6 @@ jobs:
           #  * smtp://user:password@server:port
           #  * smtp+starttls://user:password@server:port
           connection_url: ${{secrets.MAIL_CONNECTION}}
-          username: ${{secrets.MAIL_USERNAME}}
-          password: ${{secrets.MAIL_PASSWORD}}
           subject: ${{github.repository}} Job result
           to: wclin@nuvoton.com,
           from: Wayne Lin # <user@example.com>
