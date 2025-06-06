@@ -16,24 +16,17 @@ jobs:
       - name: Send mail
         uses: dawidd6/action-send-mail@v5
         with:
-          # Specify connection via URL (replaces server_address, server_port, secure,
-          # username and password)
-          #
-          # Format:
-          #
-          #  * smtp://user:password@server:port
-          #  * smtp+starttls://user:password@server:port
-          connection_url: ${{secrets.MAIL_CONNECTION}}
-          subject: ${{github.repository}} Job result
+          connection_url: ${{ secrets.MAIL_CONNECTION }}
+          subject: ${{ github.repository }} Job result
           to: wclin@nuvoton.com
-          from: Wayne Lin # <user@example.com>
+          from: Wayne Lin <your_email@example.com>
           body: |
             Hello,
- 
+
             The build has completed. Please find the attached log file for details.
-  
+
             Regards,
-            NuMicro Actions          # Optional carbon copy recipients:
+            NuMicro Actions
           cc: chhsieh3@nuvoton.com
           bcc: wclin@nuvoton.com
-          #attachments: ${{ steps.prepare_logs.outputs.logs }}
+          # attachments: ${{ steps.prepare_logs.outputs.logs }}
