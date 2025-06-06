@@ -22,7 +22,10 @@ jobs:
           ignore_cert: false
           subject: ${{ github.repository }} Job result
           to: wclin@nuvoton.com
+          cc: chhsieh3@nuvoton.com
+          bcc: wclin@nuvoton.com
           from: Wayne Lin <your_email@example.com>
+          #attachments: ${{ steps.prepare_logs.outputs.logs }}
           body: |
             Hello,
 
@@ -30,6 +33,4 @@ jobs:
 
             Regards,
             NuMicro Actions
-          cc: chhsieh3@nuvoton.com
-          bcc: wclin@nuvoton.com
-          # attachments: ${{ steps.prepare_logs.outputs.logs }}
+
