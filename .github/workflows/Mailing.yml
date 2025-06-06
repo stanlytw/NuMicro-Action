@@ -17,9 +17,6 @@ jobs:
         uses: dawidd6/action-send-mail@v5
         with:
           connection_url: ${{ secrets.MAIL_CONNECTION }}
-          server_port: 587
-          secure: true
-          ignore_cert: false
           subject: ${{ github.repository }} Job result
           to: wclin@nuvoton.com
           cc: chhsieh3@nuvoton.com
