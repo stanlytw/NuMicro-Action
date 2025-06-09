@@ -6,7 +6,7 @@ on:
       git-address:
         description: 'git-address'
         required: true
-        default: 'https://github.com/wosayttn/M55M1BSP.git'
+        default: 'https://github.com/OpenNuvoton/M2L31BSP.git'
       branches-tags:
         description: 'branches-tags'
         required: true
