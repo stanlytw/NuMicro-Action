@@ -15,6 +15,10 @@ on:
         description: 'machine'
         required: true
         default: 'palmetto'
+      target:
+        description: 'target'
+        required: true
+        default: 'obmc-phosphor-image'
 
 jobs:
   build:
@@ -36,16 +40,17 @@ jobs:
       run: |
 
         cd /opt/openbmc
-        
+        mkdir /opt/firmware
+
         git checkout ${{github.event.inputs.branches-tags}}
         
         git pull origin ${{github.event.inputs.branches-tags}}
-
-        mkdir /opt/firmware
         
         . setup ${{github.event.inputs.machine}} /opt/firmware
+
+        bitbake ${{github.event.inputs.target}} --runall=fetch
         
-        bitbake obmc-phosphor-image
+        bitbake ${{github.event.inputs.target}}
 
     #- name : Upload buildroot-${{github.event.inputs.branches-tags}}-${{github.event.inputs.board}}
       #uses: actions/upload-artifact@master
