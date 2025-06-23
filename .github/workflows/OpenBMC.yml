@@ -1,0 +1,54 @@
+name: Buildroot building
+
+on:
+  workflow_dispatch:
+    inputs:
+      git-address:
+        description: 'git-address'
+        required: true
+        default: 'https://github.com/wosayttn/openbmc.git'
+      branches-tags:
+        description: 'branches-tags'
+        required: true
+        default: 'master'
+      machine:
+        description: 'machine'
+        required: true
+        default: 'palmetto'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Clone source code
+      run: |
+        git clone ${{github.event.inputs.git-address}} /opt/openbmc
+        cd /opt/openbmc
+
+    - name: Install packages
+      run: |
+        sudo apt-get update
+        sudo apt-get upgrade
+        sudo apt-get install -y git gcc g++ make file wget gawk diffstat bzip2 cpio chrpath zstd lz4 bzip2
+    
+    - name: Bulid
+      run: |
+
+        cd /opt/openbmc
+        
+        git checkout ${{github.event.inputs.branches-tags}}
+        
+        git pull origin ${{github.event.inputs.branches-tags}}
+
+        mkdir /opt/firmware
+        
+        . setup ${{github.event.inputs.machine}} /opt/firmware
+        
+        bitbake obmc-phosphor-image
+
+    #- name : Upload buildroot-${{github.event.inputs.branches-tags}}-${{github.event.inputs.board}}
+      #uses: actions/upload-artifact@master
+      #with:
+        #name: buildroot-${{github.event.inputs.branches-tags}}-${{github.event.inputs.board}}
+        #path: /opt/firmware
