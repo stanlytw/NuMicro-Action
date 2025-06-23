@@ -1,4 +1,4 @@
-name: Buildroot building
+name: OpenBMC building
 
 on:
   workflow_dispatch:
