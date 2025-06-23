@@ -46,7 +46,7 @@ jobs:
         
         git pull origin ${{github.event.inputs.branches-tags}}
         
-        . setup ${{github.event.inputs.machine}} /opt/firmware
+        source setup ${{github.event.inputs.machine}} /opt/firmware
 
         bitbake ${{github.event.inputs.target}} --runall=fetch
         
